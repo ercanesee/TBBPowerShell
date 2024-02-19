@@ -122,9 +122,59 @@ Get-Process | get-member
 Get-Process | Select-Object -Property Name,StartTime,Path
 
 #Servisleri ekranda sadece isim ve starttype görecek şekilde getirelim
+Get-Service | Get-Member -Name "*name*","*start*"
+Get-Service | Select-Object -Property Name,StartupType
 #ChildItem kullanarak ekranda name ve en son yazılma tarihini görecek şekilde bir komut yazalım.
-#Processlri ekranda isim ve komut satırı bilgisi görecek şekilde gösterin.
+Get-ChildItem -Path C:\ | Get-Member
+Get-ChildItem -Path C:\ | Select-Object -Property Name,FullName,LastWriteTime
+#Processlri ekranda isim ve FileVersion --komut satırı bilgisi görecek şekilde gösterin.
+Get-Process
+Get-Process | Get-Member -Name "*command*"
+
+Get-Process | Select-Object -Property Name,FileVersion,CommandLine
 #Makine üzerinde lokal firewall kurallarını getiren komutu bulun
 #ve bu komuttan gelen değerleri ekranda Action,Direction ve displayname bilgilerini gösterin.
+Get-Command -verb get -Noun *firewall*
+Get-NetFirewallRule | Get-Member -Name "*acti*"
+Get-NetFirewallRule | 
+    Select-Object -Property Action,Direction,Enabled,DisplayName 
+
 #Makine üzerinde ip adreslerini ekranda sadece IpAddress ve AddressFamily bilgisi olacak şekilde görelim
-#
+Get-NetIPAddress | Select-Object -Property IPAddress,AddressFamily
+Get-Process | Select-Object -First -Last -Skip -Unique
+Get-Process | Select-Object -First 10
+Get-Process | Select-Object -Skip 10 -First 10
+Get-Process | Select-Object -Last 10
+
+Get-Service | Select-Object -Property Status -Unique
+
+Get-Process | Select-Object -First 1
+
+Get-Process | Sort-Object -Property CPU
+Get-Process | Sort-Object -Property CPU -Descending
+
+1..100 | Sort-Object -Descending
+
+Get-Process | Measure-Object
+
+Get-Command | Measure-Object
+
+Get-Process | Measure-Object -Property cpu -Sum -Average -Maximum -Minimum 
+
+Get-Service | 
+    Group-Object -Property Status
+
+Measure-Command {
+
+    Get-NetIPAddress | Select-Object -Property IPAddress,AddressFamily
+    Get-Process | Select-Object -First 10
+    Get-Process | Select-Object -Skip 10 -First 10
+
+
+}
+
+#Bana en çok cpu tüketen ilk 10 processi ekranda gösterin.
+#C:\ dizini altındaki klasörlerin yazılma tarihlerine göre sıralama yapalım ve ekranda
+#lastwritetime ve fullname değerlerini görelim.
+
+#processlerin isimlerini unique olarak ekranda görelim.
