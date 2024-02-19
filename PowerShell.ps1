@@ -174,7 +174,13 @@ Measure-Command {
 }
 
 #Bana en çok cpu tüketen ilk 10 processi ekranda gösterin.
+Get-Process | Sort-Object -Property CPU | Select-Object -Last 10
+Get-Process | Sort-Object -Property CPU -Descending | Select-Object -First 10
 #C:\ dizini altındaki klasörlerin yazılma tarihlerine göre sıralama yapalım ve ekranda
 #lastwritetime ve fullname değerlerini görelim.
+Get-ChildItem -Path C:\ | 
+    Sort-Object -Property LastWriteTime |
+        Select-Object -Property FullName,LastWriteTime
 
 #processlerin isimlerini unique olarak ekranda görelim.
+Get-Process | Select-Object -Property name -Unique
