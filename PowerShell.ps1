@@ -285,10 +285,93 @@ Get-HotFix |
         }
 #Bana get volumede yazan sizeremaining ve size bilgisini gb cinsinden ekranda sadece size,freesize ve driveletter olacak
 #şekilde gösterim.
-
-#Bana en çok cpu tüketen processlerin ne zaman başladığını total min dakika olarak ekranda gsöterin
+Get-Volume | Select-Object -Property DriveLetter,Size,SizeRemaining,@{
+    n='Size4GB';
+    e={[Math]::Round($PSItem.Size / 1GB)}
+},
+@{
+    n='FreSize4GB';
+    e={[Math]::Round($PSItem.SizeRemaining / 1GB)}
+}
+[Math]::Round(10.5)
+#Bana en çok cpu tüketen processlerin ne zaman başladığını total min dakika olarak ekranda gösterin
 #ekranda sadece name ve total min değeri olsun.
 
+Get-Process | Get-Member
+Get-Process | Sort-Object -Property cpu -Descending | Select-Object -First 10 -Property Name,
+@{
+    n='ProcessAge';
+    e={(New-TimeSpan -Start $PSItem.StartTime -End (Get-Date)).TotalMinutes}
+} | Sort-Object -Property ProcessAge
 
-        
+"ercan" -eq "ercan"
+10 -gt 11
+
+"Ercan" -like "*e*"
+
+Get-Service |
+    Where-Object {$PSItem.status -eq "Stopped"}
+get-service | 
+    Where-Object {$PSItem.Name -like "A*"}
+
+Get-NetIPAddress | Where-Object {-not ($PSItem.IPAddress -like "127*")}
+Get-NetIPAddress | Where-Object {($PSItem.IPAddress -notlike "127*")}
+
+Get-HotFix |
+    Where-Object {$PSItem.InstalledOn -le (get-date) -or $PSItem.Description -eq "Update"}
+
+#Processlerden cpu değeri 100 den büyük olan proecssleri ekranda sadece isim ve cpu görecek şekilde yazalım.
+Get-Process | 
+    Where-Object {$PSItem.cpu -gt 100} |
+        Select-Object -Property Name,CPU
+#Otomatik olupta start olmayan servisleri ekranda görelim.
+Get-Service | Where-Object {($PSItem.StartType -eq "automatic") -and ($PSItem.Status -eq "Stopped")}
+#Firewall kurallarından sadece enable olanları ekranda görelim.
+Get-NetFirewallRule | Get-Member -Name "*enab*"
+Get-NetFirewallRule |
+    Where-Object {$_.Enabled -eq "True"} |
+        Select-Object -Property Enabled,DisplayName
+#C:\ altında son 50 gün içerisinde lastwritetime değeri olan klasörleri listeleyin.
+
+Get-ChildItem -Path C:\ |
+    Where-Object {$PSItem.LastWriteTime -ge "1/1/2024"}
+
+Get-ChildItem -Path C:\ |
+    Where-Object {$PSItem.LastWriteTime -ge (Get-Date).AddDays(-50)}
+
+(get-date) | Get-Member
+
+
+
+Get-NetFirewallRule |
+    Where-Object {$_.Enabled -eq "True"} |
+        Select-Object -Property Enabled,DisplayName | Out-File -FilePath C:\tmp\projectdemo\firewall.txt 
+
+
+Get-NetFirewallRule |
+        Where-Object {$_.Enabled -eq "True"} |
+            Select-Object -Property Enabled,DisplayName | Export-Csv -Path C:\tmp\projectdemo\test.csv 
+
+Get-NetFirewallRule |
+            Where-Object {$_.Enabled -eq "True"} |
+                Select-Object -Property Enabled,DisplayName | convertTo-Csv 
+
+Get-NetFirewallRule |
+                Where-Object {$_.Enabled -eq "True"} |
+                    Select-Object -Property Enabled,DisplayName | ConvertTo-Html  | 
+                        Out-File -FilePath C:\tmp\projectdemo\tst.html             
+
+
+Export-Clixml
+ConvertTo-Json
+
+Get-NetFirewallRule |
+                Where-Object {$_.Enabled -eq "True"} |
+                    Select-Object -Property Enabled,DisplayName |
+                        ConvertTo-Json
+
+"ercanesssse" | Out-File -FilePath C:\tmp\projectdemo\test.txt -Append 
+
+        New-Item -Path C:\tmp\projectdemo -ItemType Directory
+
 
