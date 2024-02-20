@@ -267,3 +267,28 @@ New-TimeSpan -Start 02/10/2024 -End (Get-Date) | Select-Object -ExpandProperty D
 Get-Date -Format "dd.MM.yyyy" 
 (get-date).ToString("ddMMyyyy")
 
+Get-HotFix | 
+    Select-Object -Property HotfixID,@{
+        n='UpdateAge';
+        e={(New-TimeSpan -Start $PSItem.InstalledOn -End (Get-Date)).TotalDays}
+
+    },InstalledOn
+
+
+    Get-Disk | Select-Object -Property number,Size,AllocatedSize,@{
+        n='Size4GB';
+        e={$PSItem.size / 1GB}
+        },
+        @{
+        n='AllocatedSize4GB';
+        e={$PSItem.AllocatedSize / 1GB}
+        }
+#Bana get volumede yazan sizeremaining ve size bilgisini gb cinsinden ekranda sadece size,freesize ve driveletter olacak
+#şekilde gösterim.
+
+#Bana en çok cpu tüketen processlerin ne zaman başladığını total min dakika olarak ekranda gsöterin
+#ekranda sadece name ve total min değeri olsun.
+
+
+        
+
