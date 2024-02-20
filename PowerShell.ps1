@@ -438,3 +438,91 @@ $upLast = $LastSp[0].ToString().ToUpper() + $LastSp.Substring(1)
 
 $FullName = $upName + "." + $upLast
 $FullName
+
+$Meyveler = "Elma","Armut"
+$Services = Get-Service
+
+$nullArray = @()
+
+$nullArray = $nullArray + "Ercan"
+$nullArray = $nullArray + "Konca"
+$nullArray = $nullArray + "Alper"
+$nullArray = $nullArray + "Volkan"
+
+[System.Collections.ArrayList]$ArryList = @()
+
+$ArryList.Add("Ercan")
+$ArryList.Add("Huseyin")
+$ArryList.Add("Elif")
+
+$ArryList.Remove("Ercan")
+$ArryList.RemoveAt(0)
+
+$nullArray[0]
+$nullArray[1]
+$nullArray[0..2]
+$nullArray | Select-Object -Skip 1 -First 1
+
+
+foreach($arItem in $ArryList){
+
+    Write-Host "Ad : $aritem"
+    "AD : $arItem" | Out-File -FilePath C:\tmp\projectdemo\users.txt -Append
+
+}
+
+#ALG ve Bits servisini bir dizi içerisinde tutalım.
+#ve bu servislerin ad : Status : bilgilerini bir txtye yazalım.
+
+$Servisler = "ALG","BITS"
+$LogPath = "C:\Tmp\projectdemo"
+foreach ($Item in $Servisler) {
+    #$s = $null
+    $s = Get-Service -Name $Item
+
+    #"name : $($s.Name) status : $($s.Status)" | Out-File -FilePath "$LogPath\userss.txt" -Append
+    $s | Select-Object -Property Name,Status | Export-Csv -Path "$LogPath\service.csv" -Append
+
+}
+
+$Size = 11GB
+
+if($size -le 5GB)
+{
+
+    Write-Host "Size değeri 5GB dan küçük."
+}
+elseif($Size -le 10GB){
+    Write-Host "Size değeri 10GB dan küçük veya eşit"   
+}
+else {
+
+    Write-Host "Size değeri 10GB dan büyük."  
+}
+
+#Cpu değeri 100 den büyük olan processleri bir csvde tutalım fakat bunu foreach ve if kullanarak yapalım.
+
+$Process = Get-Process
+$FileName = "Proc_$(Get-Date -Format "ddMMyyyyhhmm").csv"
+$LogNameP = "C:\tmp\projectdemo"
+
+if(-not $LogNameP.EndsWith('\'))
+{
+    #$LogNameP = $LogName + "\"
+    $LogNameP += "\"
+}
+
+$FullPathName = $LogNameP + $FileName
+
+foreach ($proc in $Process) {
+    if($proc.cpu -ge 100)
+    {
+        $proc | Select-Object -Property Name,CPU | Export-Csv -Path $FullPathName -Append 
+    }
+    else {
+
+    }
+}
+
+#Servisleri bir değişkende tutalım ve automatic olupta start olmayan servisleri bularak
+#bir csv de sadece name status ve starttype değerlerini tutalım.
