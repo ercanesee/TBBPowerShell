@@ -371,7 +371,70 @@ Get-NetFirewallRule |
                         ConvertTo-Json
 
 "ercanesssse" | Out-File -FilePath C:\tmp\projectdemo\test.txt -Append 
+New-Item -Path C:\tmp\projectdemo -ItemType Directory
 
-        New-Item -Path C:\tmp\projectdemo -ItemType Directory
 
 
+$LogName = "C:\tmp"
+$IpAddress = "172.16.0.10"
+$Services = Get-Service
+$Names
+
+#PascalCase
+
+$LogName | Get-Member
+$LogName.GetType()
+[int]$Num1 = 2
+$num2 = 2
+$num1 + $num2
+[bool]$t = 1
+
+[datetime]$Dt = [datetime]"2/20/2024"
+
+Write-Host "Gün : $($Dt.Day )"
+
+$num2 = $null
+
+$Mail = "ercan.ese@bilgeadam.com"
+$Mail.Split('@')
+$Mail.ToUpper()
+$Ad = "ercan"
+$ad[0].GetType()
+([string]$ad[0]).ToUpper() + $ad.Substring(1)
+$Today = [datetime](get-date)
+$Today.AddDays(10)
+
+#SAyi1 ve SAyi2 şeklinde iki değişken oluşturun ve bu değişkenlere sayılara atayın.
+#Atadığınız sayıları toplam değişkeninde toplam sonucunu gösterin.
+[int]$Sayi1 = 10
+$Sayi2 = 20
+
+$Toplam = $Sayi1 + $Sayi2
+Write-Host "Topam : $Toplam" -ForegroundColor Cyan
+
+#herkes ad ve soy adını boşluk kullanarak bir değişkende tutsun ve boşluktan bölerek adsoyadı ayırın.
+$AdSoyad = "ercan ese"
+$AdSoyad.Split(' ')
+
+#Büyük yazılmış bir text değerini küçük formtta ekrana yazın.
+$toUp = "ERCAN ESE"
+$toUp.ToLower()
+#Bugüne -45 dk ekleyerek processlerden bu -45 dakika içerisinde çalışanları ekranda listeleyin.
+$cutOfMin = (get-date).AddMinutes(-45)
+Get-Process |
+    Where-Object {$PSItem.StartTime -ge $cutOfMin}
+
+#isim ve soyismi arada nokta kullanarak bir değişkende tutun ve.
+#isim ve soy ismin ilk harflerini büyüterek başka bir değişkende arada nokta olacak şekilde gösterin.
+
+$AdSoyad = "ercan.ese"
+
+#$ads,$soyad = $AdSoyad.Split('.')
+$adSp = $AdSoyad.Split('.')[0]
+$LastSp = $AdSoyad.Split('.')[1]
+
+$upName = $adSp[0].ToString().ToUpper() + $adSp.Substring(1)
+$upLast = $LastSp[0].ToString().ToUpper() + $LastSp.Substring(1)
+
+$FullName = $upName + "." + $upLast
+$FullName
