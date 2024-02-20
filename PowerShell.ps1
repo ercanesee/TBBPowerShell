@@ -184,3 +184,86 @@ Get-ChildItem -Path C:\ |
 
 #processlerin isimlerini unique olarak ekranda görelim.
 Get-Process | Select-Object -Property name -Unique
+
+@{
+    n='eHostname';
+    e={}
+}
+
+get-service | Select-Object -Property Name,MachineName
+get-service | Get-Member
+
+Measure-Command {
+    get-service | Select-Object -Property Name,@{
+        n='ercanHostName';
+        e={hostname}
+    }
+
+}
+
+Measure-Command {
+    get-service | Select-Object -Property Name,@{
+        n='ercanHostName';
+        e={$env:COMPUTERNAME}
+    }
+
+}
+
+
+get-service | Select-Object -Property Name,@{
+    n='ercanHostName';
+    e={$env:COMPUTERNAME}
+}
+
+
+Get-Process | Sort-Object -Property cpu -Descending |
+Select-Object  -First 10 -Property Name,CPU,@{
+n='2dvdCPU';
+e={$PSItem.cpu/2}
+}
+
+#Processleri ekranda id ye göreli sıralı şekilde sadece id ve name olacak şekilde getirin.
+#Sonrasında bir custom kolon ekleyin bu kolonun ismini siz verin
+#fakat değeri id değerinin 2 katı olacak.
+Get-Process | Sort-Object -Property id -Descending |
+Select-Object -Property Name, id, @{
+    n='2rpt2';
+    e= {$PSItem.id * 2}
+}
+
+Get-Service | Select-Object -Property Name,@{
+n='Ln';
+e={$PSItem.name.ToUpper()}
+}
+
+
+Get-Disk | Get-Member
+Get-Disk | Select-Object -Property *
+
+
+
+Get-Disk | Select-Object -Property number,Size,AllocatedSize,@{
+n='Size4GB';
+e={$PSItem.size / 1GB}
+},
+@{
+n='AllocatedSize4GB';
+e={$PSItem.AllocatedSize / 1GB}
+}
+
+Get-HotFix
+
+
+Get-Command -Verb * -Noun *time*
+
+New-TimeSpan -Start 02/10/2024 -End (Get-Date) | Select-Object -ExpandProperty DAys
+(New-TimeSpan -Start 02/10/2024 -End (Get-Date)).Days
+
+(Get-Service -Name aLG).Status
+
+"Ercan".Length
+"Mustafa bayir".ToUpper()
+
+Get-Date -Format "dd.MM.yyyy" 
+(get-date).ToString("ddMMyyyy")
+
