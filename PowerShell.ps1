@@ -526,3 +526,29 @@ foreach ($proc in $Process) {
 
 #Servisleri bir değişkende tutalım ve automatic olupta start olmayan servisleri bularak
 #bir csv de sadece name status ve starttype değerlerini tutalım.
+
+$Services = Get-Service
+foreach ($Item in $Services) {
+    if($item.status -eq "stopped" -and $item.StartupType -eq "Automatic"){
+
+        $Item | Select-Object -Property Name,Status,StartupType |
+            Export-Csv -Path C:\tmp\projectdemo\servisler.csv -Append
+    }
+}
+
+get-service -Name ALG | Select-Object -Property *
+
+$Pokes = "ditto","charizard"
+
+foreach ($poke in $Pokes) {
+    $Pokerec = Invoke-RestMethod -Method Get -Uri https://pokeapi.co/api/v2/pokemon/$poke
+    $Pokerec | Select-Object -Property NAme,moves
+
+}
+
+Get-Content -Path C:\tmp\projectdemo\Computer.txt
+$Users = Import-Csv -Path C:\tmp\projectdemo\users1.csv
+
+foreach ($user in $Users) {
+    $user.ad
+}
